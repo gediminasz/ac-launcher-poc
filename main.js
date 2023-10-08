@@ -1,6 +1,9 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, ipcMain } = require('electron');
+
 const path = require('node:path');
+const { copyFileSync } = require('node:fs');
+const os = require("os");
 
 const createWindow = () => {
     // Create the browser window.
@@ -23,7 +26,11 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-    ipcMain.handle('ping', () => console.log('pong'));
+    ipcMain.handle('ping', () => {
+        const destination = path.join(os.homedir(), "Documents/Assetto Corsa/cfg/race.ini");
+        console.log(`Copying race.ini to ${destination}`);
+        copyFileSync("./race.ini", destination);
+    });
 
     createWindow();
 
