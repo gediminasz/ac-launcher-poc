@@ -4,6 +4,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const { copyFileSync } = require('node:fs');
 const os = require("os");
+const { spawn } = require('child_process');
 
 const createWindow = () => {
     // Create the browser window.
@@ -30,6 +31,10 @@ app.whenReady().then(() => {
         const destination = path.join(os.homedir(), "Documents/Assetto Corsa/cfg/race.ini");
         console.log(`Copying race.ini to ${destination}`);
         copyFileSync("./race.ini", destination);
+
+        const executable = 'C:/Program Files (x86)/Steam/steamapps/common/assettocorsa/acs.exe';
+        console.log(`Launching ${executable}`);
+        spawn(executable, [], { detached: true, stdio: 'ignore' });
     });
 
     createWindow();
